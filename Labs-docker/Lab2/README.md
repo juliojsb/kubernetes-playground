@@ -102,7 +102,7 @@ Veamos ahora cómo podemos construir la misma imagen a partir de un `dockerfile`
 
 En el repositorio de la formación esta el `Dockerfile` que usaremos para crear la imagen en el directorio `node-express-server`. En este directorio tambien estan los ficheros `package.json` e `index.js` que se necesitan para la imagen. Nos movemos al directorio `node-express-server`:
 
-    $cd <repo>/kubernetes/Labs-docker/Lab2/node-express-server
+    $ cd <repo>/kubernetes/Labs-docker/Lab2/node-express-server
 
 Este es el contenido del `Dockerfile`, los pasos que se describen son los mismos que hicimos manualmente en el punto 1:
 
@@ -152,7 +152,7 @@ Si entramos en el contenedor que acabamos de crear veremos que el directorio `/u
     -rw-rw-r--  1 root root   555 Dec  3 17:19 package.json
 
 
-Salir del contenedor con exit
+Salir del contenedor con `exit`
 
 #### 3. Creando la imagen importando un fichero comprimido
 
@@ -185,3 +185,5 @@ Y ahora vamos a volver a crear la imagen a partir del fichero tar:
     Loaded image: my-node-server:1.0
 
 A partir de aquí se podría arrancar un contenedor usando la imagen que hemos cargado. Esta opción es muy útil si se quiere compartir imagenes.
+
+IMPORTANTE: No confundir guardar una imagen con `docker save` con hacer backup de contenedores. Simplemente estamos guardando la imagen, no el contenido de ningún contenedor.
