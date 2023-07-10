@@ -139,3 +139,5 @@ Para nuestro contenedor por ejemplo:
     $ sudo docker container rm quotes
 
 A veces, eliminar un contenedor en ejecución no funcionará; Si desea forzar la eliminación, puedes utilizar el parámetro de línea de comandos `-f` o `--force`.
+
+IMPORTANTE: Eliminar un contenedor no elimina la imagen del mismo.
