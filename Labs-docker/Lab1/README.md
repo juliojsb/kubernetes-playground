@@ -151,3 +151,57 @@ IMPORTANTE: Eliminar un contenedor no elimina la imagen del mismo. Si hacemos `d
     registry.redhat.io/rhel7/rhel                 latest            acf3e09a39c9   14 months ago   206MB
     registry.redhat.io/openjdk/openjdk-11-rhel7   latest            9bcac2eabc8b   14 months ago   530MB
 
+## 7. Almacenamiento persistente
+
+Ejecutamos un contenedor de Nginx:
+
+    $ sudo docker container run --name mynginx1 -p 80:80 -d nginx
+
+Comprobamos que se está ejecutando:
+
+    [jota@curso ~]$ docker ps
+    CONTAINER ID   IMAGE                   PORTS                    STATUS         NAMES
+    6b7b521d50a2   nginx                   0.0.0.0:80->80/tcp       Up 3 seconds   mynginx1
+
+Entramos al contenedor y creamos un fichero de prueba:
+
+    [jota@curso ~]$ docker exec -it mynginx1 bash
+    
+    root@6b7b521d50a2:/# 
+    
+    root@6b7b521d50a2:/# env
+    HOSTNAME=6b7b521d50a2
+    PWD=/
+    PKG_RELEASE=1~bookworm
+    HOME=/root
+    NJS_VERSION=0.7.12
+    TERM=xterm
+    SHLVL=1
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    NGINX_VERSION=1.25.1
+    _=/usr/bin/env
+    
+    root@6b7b521d50a2:/# echo "Esto es un fichero de prueba" > /tmp/readme.txt
+    
+    root@6b7b521d50a2:/# cat /tmp/readme.txt
+    Esto es un fichero de prueba
+    
+    root@6b7b521d50a2:/# exit
+    exit
+
+Paramos y eliminamos el contenedor:
+
+    [jota@curso ~]$ sudo docker container stop mynginx1
+    mynginx1
+    
+    [jota@curso ~]$ sudo docker container rm mynginx1
+    mynginx1
+
+Volvemos a ejecutarlo y entramos. Comprobamos que el fichero que creamos anteriormente no existe. Esto es porque el contenido del contenedor es efímero:
+    
+    [jota@curso ~]$ docker exec -it mynginx1 bash
+    
+    root@23164c93723e:/# cat /tmp/readme.txt
+    cat: /tmp/readme.txt: No such file or directory
+
+
