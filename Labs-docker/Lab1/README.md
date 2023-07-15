@@ -206,8 +206,6 @@ Volvemos a ejecutarlo y entramos. Comprobamos que el fichero que creamos anterio
 
 Lo ejecutamos creando un volumen y montándolo en el contenedor:
 
-    docker container run --name mynginx1 -p 80:80 -d --mount source=myvol,target=/tmp  nginx
-
     [jota@curso ~]$ docker container run --name mynginx1 -p 80:80 -d --mount source=myvol,target=/tmp  nginx
     a949bce0d85b2f65d42eb7a02caf20a9b81dd6c0a8f6f3de2772f80fab43cd78
     
@@ -236,6 +234,7 @@ Salimos, lo paramos y borramos:
 
     [jota@curso ~]$ sudo docker container stop mynginx1
     mynginx1
+    
     [jota@curso ~]$ sudo docker container rm mynginx1
     mynginx1
 
