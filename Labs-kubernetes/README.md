@@ -20,6 +20,10 @@
     $ ssh-keygen -t rsa -b 4096
     $ minikube start --driver=docker
 
+Una vez arrancado comprobamos el estado:
+
+    $ minikube status
+
 ### 4. En este punto ya se puede tener acceso al minikube con el kubectl
     $ kubectl cluster-info
     Kubernetes master is running at https://192.168.99.100:8443
