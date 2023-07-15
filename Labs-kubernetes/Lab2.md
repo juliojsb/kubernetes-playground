@@ -65,10 +65,11 @@ En este laboratorio practicaremos como crear y usar etiquetas y anotaciones.
        pod/nginx1 annotated
        pod/nginx2 annotated
        pod/nginx3 annotated
-       lgarciap@lgarciap-ubuntu:~$ kubectl describe po nginx1 -nmy-nginx | grep -i 'annotations'
+   
+       $ kubectl describe po nginx1 -nmy-nginx | grep -i 'annotations'
        Annotations:  <none>
 
-10. Borrar los 3 pods y el namespace:
+11. Borrar los 3 pods y el namespace:
 
         $ kubectl delete po nginx{1..3} -nmy-nginx
         $ kubectl delete ns my-nginx
