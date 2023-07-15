@@ -29,6 +29,13 @@ Una vez arrancado comprobamos el estado:
 
     $ minikube status
 
+Podemos inicializar minikube con más de un nodo:
+
+    $ minikube start --nodes 3 -p multinode-demo
+
+O bien ir añadiendo nodos a un clúster existente:
+
+    $ minikube node add -p multinode-demo
 
 ## 4. En este punto ya se puede tener acceso al minikube con el kubectl
     
