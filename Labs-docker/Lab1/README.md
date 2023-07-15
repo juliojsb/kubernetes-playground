@@ -119,7 +119,7 @@ Si el proceso no termina por su cuenta, Docker espera 10 segundos antes de envia
 
 En el comando anterior, el nombre del contenedor se utiliza para especificar el contenedor específico que se debe detener. Se puede utilizar el ID del contenedor en su lugar.
 
-#### 5. ¿Cómo obtener el ID de un contenedor?
+## 5. ¿Cómo obtener el ID de un contenedor?
 
 Hay varias maneras de hacerlo. La forma manual es listar todos los contenedores en ejecución y encontrar el que estás buscando en la lista. Sólo tienes que copiar su ID desde allí, por ejemplo:
 
