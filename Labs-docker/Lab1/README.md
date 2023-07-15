@@ -1,8 +1,8 @@
-### Instrucciones Laboratorio 1 - Docker - Gestión de contenedores
+# Instrucciones Laboratorio 1 - Docker - Gestión de contenedores
 
 En este laboratorio vamos a poner en practica la gestion de contenedores.
 
-#### 1. Ejecutar un proceso dentro de un contenedor
+## 1. Ejecutar un proceso dentro de un contenedor
 
 Comando para ejecutar un contenedor con un proceso ejecutándose dentro:
 
@@ -52,7 +52,7 @@ Si ejecutas el contenedor anterior nuevamente en tu entorno, las primeras cinco 
     $ sudo docker container run centos ping -c 5 127.0.0.1
 
 
-#### 2. Ejecutar un contenedor en background
+## 2. Ejecutar un contenedor en background
 
 El comando Docker sería el siguiente:
 
@@ -71,7 +71,7 @@ Comprueba los logs del contenedor:
     $ sudo docker logs <CONTAINER_ID>
 
 
-#### 3. Listando contenedores
+## 3. Listando contenedores
 
 A medida que continúes ejecutando contenedores a lo largo del tiempo tendrás muchos en tu sistema. Para averiguar qué se está ejecutando actualmente en tu host, puede utilizar el siguiente comando:
 
@@ -103,7 +103,7 @@ Podrías preguntarte cuál sería la utilidad de esto. Aquí hay un ejemplo:
 El comando anterior elimina todos los contenedores actualmente definidos en el sistema, incluidos los detenidos. El comando rm significa remover.
 
 
-#### 4. Detener y ejecutar contenedores
+## 4. Detener y ejecutar contenedores
 
 A veces, necesitarás detener temporalmente un contenedor en ejecución. Inicia nuevamente el contenedor del ejemplo anterior:
 
@@ -128,7 +128,7 @@ Hay varias maneras de hacerlo. La forma manual es listar todos los contenedores 
 
 Aquí utilizamos AWK para obtener el primer campo que es el ID del contenedor.
 
-#### 6. Eliminando contenedores
+## 6. Eliminando contenedores
 
 El comando para eliminar un contenedor es el siguiente:
 
@@ -140,4 +140,14 @@ Para nuestro contenedor por ejemplo:
 
 A veces, eliminar un contenedor en ejecución no funcionará; Si desea forzar la eliminación, puedes utilizar el parámetro de línea de comandos `-f` o `--force`.
 
-IMPORTANTE: Eliminar un contenedor no elimina la imagen del mismo.
+IMPORTANTE: Eliminar un contenedor no elimina la imagen del mismo. Si hacemos `docker image ls` después de parar el contenedor, veremos la imagen.
+    
+    REPOSITORY                                    TAG               IMAGE ID       CREATED         SIZE
+    mycron                                        latest            879a54e8017e   11 months ago   32.9MB
+    debian                                        bullseye-slim     6a8065e4ba13   11 months ago   80.4MB
+    alpine                                        3.14              5977be310a9d   12 months ago   5.59MB
+    alpine                                        3                 d7d3d98c851f   12 months ago   5.53MB
+    registry                                      2                 773dbf02e42e   13 months ago   24.1MB
+    registry.redhat.io/rhel7/rhel                 latest            acf3e09a39c9   14 months ago   206MB
+    registry.redhat.io/openjdk/openjdk-11-rhel7   latest            9bcac2eabc8b   14 months ago   530MB
+
