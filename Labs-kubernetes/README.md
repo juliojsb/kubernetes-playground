@@ -37,6 +37,12 @@ O bien ir añadiendo nodos a un clúster existente:
 
     $ minikube node add -p multinode-demo
 
+NOTA: Si creamos un clúster con la opción `-p` luego hay que incluir el nombre del clúster al interactuar con minikube:
+
+    $ minikube stop -p multinode-demo
+    $ minikube status -p multinode-demo
+    ...
+
 ## 4. En este punto ya se puede tener acceso al minikube con el kubectl
     
     $ kubectl cluster-info
