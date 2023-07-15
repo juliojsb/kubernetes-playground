@@ -1,6 +1,6 @@
-### Preparación entorno para Laboratorios de docker
+# Preparación entorno para Laboratorios de docker
 
-#### 1. Creación maquina virtual Ubuntu para instalar docker:
+## 1. Creación maquina virtual Ubuntu para instalar docker:
 
 https://www.manusoft.es/linux/configurar-una-maquina-virtual-con-ubuntu-en-virtualbox/
 
@@ -8,11 +8,11 @@ Añadir guest additions:
 
 https://kifarunix.com/install-virtualbox-guest-additions-on-ubuntu-20-04/
 
-#### 2. Instalar docker:
+## 2. Instalar docker:
 
 https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
-#### 3. Comprobar versión de Docker
+## 3. Comprobar versión de Docker
 Podemos comprobar la versión de Docker ejecutando el comando
 
 	$ docker --version
@@ -35,7 +35,7 @@ O ejecutando los siguientes comando podemos ver aún más detalles sobre la inst
 	  scan: Docker Scan (Docker Inc., v0.21.0)
 	...
 
-#### 4. Comprobar instalación de Docker
+## 4. Comprobar instalación de Docker
 
 4.1. En un terminal de la máquina virtual, ejecute los siguientes comandos para comprobar que inicialmente no hay ningún contenedor creado
 (la opción -a hace que se muestren también los contenedores detenidos, sin ella se muestran sólo los contenedor que estén en
