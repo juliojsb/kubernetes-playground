@@ -121,3 +121,50 @@ En este laboratorio practicaremos como crear y usar volumenes persistentes está
 ## Provisionamiento dinámico
 
 En el anterior ejemplo hemos creado un PV y posteriormente un PVC para consumir este almacenamiento. Este ha sido un proceso manual. Vamos a probar a crear un PV automáticamente cuando un PVC lo requiera.
+
+Minikube ya cuenta con una StorageClass que nos permite provisionar almacenamiento de forma dinámica:
+
+       $ kubectl get sc
+       NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+       standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  42m
+
+Creamos directamente el Claim:
+
+       $ vi dynamic-pvc.yaml
+       
+       apiVersion: v1
+       kind: PersistentVolumeClaim
+       metadata:
+         name: dynamic-pvc
+       spec:
+         accessModes:
+         - ReadWriteOnce
+         resources:
+           requests:
+             storage: 1Gi
+       
+       $ kubectl apply -f dynamic-pvc.yaml
+
+Una vez creado, comprobamos que se ha creado el PVC y tenemos disponsible automáticamente el PV:
+
+       $ kubectl get pvc
+       NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+       dynamic-pvc     Bound    pvc-50f025e6-8f87-4a11-81cc-3316a07643c2   1Gi        RWO            standard          3s
+       
+       $ kubectl get pv
+       NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS      REASON   AGE
+       pvc-50f025e6-8f87-4a11-81cc-3316a07643c2   1Gi        RWO            Delete           Bound    default/dynamic-pvc     standard                   7s
+
+Si borramos el PVC, se eliminará el PV. Esto es así por la opción de la StorageClass `RECLAIMPOLICY` que está en `Delete`
+
+       $ kubectl delete pvc dynamic-pvc
+       
+       $ kubectl get pvc
+       NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+       
+       $ kubectl get pv
+       NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                   STORAGECLASS      REASON   AGE
+
+
+
+
