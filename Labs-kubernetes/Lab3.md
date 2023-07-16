@@ -1,7 +1,7 @@
-### Instrucciones Laboratorio 3 - Kubernetes - Deployments
+# Instrucciones Laboratorio 3 - Kubernetes - Controllers
+## Deployments
 
 En este laboratorio practicaremos como crear y gestionar Deployments.
-
 
 1. Crear un namespace llamado `deploy-nx`. Crear el yaml de un `deployment` a partir de la image `nginx:1.7.8`, llamado `nginx`:
 
@@ -167,3 +167,79 @@ En este laboratorio practicaremos como crear y gestionar Deployments.
 17. Borrar el namespace:
 
         $ kubectl delete ns deploy-nx
+
+
+## StatefulSet
+
+En este laboratorio vamos a crear un StatefulSet y comprobaremos cómo se provisiona almacenamiento asociado a cada pod:
+
+1. Creamos el StatefulSet:
+
+       $ vi statefulset.yaml
+
+       apiVersion: apps/v1
+       kind: StatefulSet
+       metadata:
+         name: web
+       spec:
+         serviceName: "nginx"
+         replicas: 2
+         selector:
+           matchLabels:
+             app: nginx
+         template:
+           metadata:
+             labels:
+               app: nginx
+           spec:
+             containers:
+             - name: nginx
+               image: registry.k8s.io/nginx-slim:0.8
+               ports:
+               - containerPort: 80
+                 name: web
+               volumeMounts:
+               - name: www
+                 mountPath: /usr/share/nginx/html
+         volumeClaimTemplates:
+         - metadata:
+             name: www
+           spec:
+             accessModes: [ "ReadWriteOnce" ]
+             resources:
+               requests:
+                 storage: 1Gi
+
+       $ kubectl apply -f statefulset.yaml
+
+2. Revisamos los Pods y el StatefulSet
+
+       $ kubectl get pod
+       NAME          READY   STATUS    RESTARTS   AGE
+       web-0         1/1     Running   0          7s
+       web-1         1/1     Running   0          35s
+
+       $ kubectl get sts
+       NAME   READY   AGE
+       web    2/2     16m
+
+3. Revisamos los PVC. Vemos que se han creado automáticamente y con un nombre identificativo por cada pod:
+
+       $ kubectl get pvc
+       NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+       www-web-0       Bound    pvc-d90af041-cbee-4676-a3ba-fb21a5ff1cdb   1Gi        RWO            standard          98s
+       www-web-1       Bound    pvc-abff09e2-7478-44bb-b835-7b5edf175a6d   1Gi        RWO            standard          68s
+
+4. Vemos que también se han provisionado los PV:
+
+       $ kubectl get pv
+       NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                   STORAGECLASS      REASON   AGE
+       pvc-abff09e2-7478-44bb-b835-7b5edf175a6d   1Gi        RWO            Delete           Bound       default/www-web-1       standard                   17s
+       pvc-d90af041-cbee-4676-a3ba-fb21a5ff1cdb   1Gi        RWO            Delete           Bound       default/www-web-0       standard                   47s
+
+5. Borramos el StatefulSet:
+
+       $ kubectl delete sts web
+       statefulset.apps "web" deleted
+   
+7. Eliminar un StatefulSet no elimina por defecto el almacenamiento provisionado anteriormente. Si comprobamos los PVC y PV, vemos que no se han borrado. 
