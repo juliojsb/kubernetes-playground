@@ -27,3 +27,9 @@ Logs e info de aplicación, servicios...
 	$ kubectl get endpoints [service-name]
 
 Acceder a apps para comprobar funcionalidad:
+
+Mantenimiento:
+
+kubectl drain minikube --ignore-daemonsets --delete-emptydir-data --force
+kubectl cordon minikube
+kubectl uncordon minikube
