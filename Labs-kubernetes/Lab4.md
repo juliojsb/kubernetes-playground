@@ -1,4 +1,6 @@
-### Instrucciones Laboratorio 4 - Kubernetes - Almacenamiento Persistente
+# Instrucciones Laboratorio 4 - Kubernetes - Almacenamiento Persistente
+
+## Provisionamiento estático
 
 En este laboratorio practicaremos como crear y usar volumenes persistentes estáticos.
 
@@ -115,3 +117,7 @@ En este laboratorio practicaremos como crear y usar volumenes persistentes está
         Hello from Kubernetes storage
 
 13. Si vemos el mensaje `Hello from Kubernetes storage` es que todo funciona correctamente.
+
+## Provisionamiento dinámico
+
+En el anterior ejemplo hemos creado un PV y posteriormente un PVC para consumir este almacenamiento. Este ha sido un proceso manual. Vamos a probar a crear un PV automáticamente cuando un PVC lo requiera.
