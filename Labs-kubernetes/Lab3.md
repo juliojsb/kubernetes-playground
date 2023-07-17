@@ -246,7 +246,7 @@ En este laboratorio vamos a crear un StatefulSet y comprobaremos cómo se provis
 
 ## DaemonSet
 
-Creamos el DaemonSet:
+1. Creamos el DaemonSet:
        
        $ vi daemonset.yaml
        
