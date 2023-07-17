@@ -246,6 +246,18 @@ En este laboratorio vamos a crear un StatefulSet y comprobaremos cómo se provis
 
 ## DaemonSet
 
+Para esta parte arrancaremos de forma temporal un clúster de 2 nodos:
+
+       $ minikube stop
+       $ minikube start --nodes 2 -p daemonset-demo --driver=docker
+
+Esperamos a que los nodos estén Ready
+
+       $ kubectl get nodes
+       NAME                 STATUS   ROLES                  AGE     VERSION
+       daemonset-demo       Ready    control-plane,master   6m18s   v1.21.2
+       daemonset-demo-m02   Ready    <none>                 116s    v1.21.2
+
 1. Creamos el DaemonSet:
        
        $ vi daemonset.yaml
@@ -292,3 +304,5 @@ En este laboratorio vamos a crear un StatefulSet y comprobaremos cómo se provis
              - name: varlog
                hostPath:
                  path: /var/log
+
+       $ kubectl apply -f daemonset.yaml
