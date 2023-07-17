@@ -252,57 +252,58 @@ Para esta parte arrancaremos de forma temporal un clúster de 2 nodos:
 	$ minikube start --nodes 2 -p daemonset-demo --driver=docker
 
 Esperamos a que los nodos estén Ready
-
-       $ kubectl get nodes
-       NAME                 STATUS   ROLES                  AGE     VERSION
-       daemonset-demo       Ready    control-plane,master   6m18s   v1.21.2
-       daemonset-demo-m02   Ready    <none>                 116s    v1.21.2
+	
+	$ kubectl get nodes
+	NAME                 STATUS   ROLES                  AGE     VERSION
+	daemonset-demo       Ready    control-plane,master   6m18s   v1.21.2
+	daemonset-demo-m02   Ready    <none>                 116s    v1.21.2
 
 1. Creamos el DaemonSet:
        
-       $ vi daemonset.yaml
-       
-       apiVersion: apps/v1
-       kind: DaemonSet
-       metadata:
-         name: fluentd-elasticsearch
-         namespace: kube-system
-         labels:
-           k8s-app: fluentd-logging
-       spec:
-         selector:
-           matchLabels:
-             name: fluentd-elasticsearch
-         template:
-           metadata:
-             labels:
-               name: fluentd-elasticsearch
-           spec:
-             tolerations:
-             # these tolerations are to have the daemonset runnable on control plane nodes
-             # remove them if your control plane nodes should not run pods
-             - key: node-role.kubernetes.io/control-plane
-               operator: Exists
-               effect: NoSchedule
-             - key: node-role.kubernetes.io/master
-               operator: Exists
-               effect: NoSchedule
-             containers:
-             - name: fluentd-elasticsearch
-               image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
-               resources:
-                 limits:
-                   memory: 200Mi
-                 requests:
-                   cpu: 100m
-                   memory: 200Mi
-               volumeMounts:
-               - name: varlog
-                 mountPath: /var/log
-             terminationGracePeriodSeconds: 30
-             volumes:
-             - name: varlog
-               hostPath:
-                 path: /var/log
+	$ vi daemonset.yaml
+	
+	apiVersion: apps/v1
+	kind: DaemonSet
+	metadata:
+	 name: fluentd-elasticsearch
+	 namespace: kube-system
+	 labels:
+	   k8s-app: fluentd-logging
+	spec:
+	 selector:
+	   matchLabels:
+	     name: fluentd-elasticsearch
+	 template:
+	   metadata:
+	     labels:
+	       name: fluentd-elasticsearch
+	   spec:
+	     tolerations:
+	     # these tolerations are to have the daemonset runnable on control plane nodes
+	     # remove them if your control plane nodes should not run pods
+	     - key: node-role.kubernetes.io/control-plane
+	       operator: Exists
+	       effect: NoSchedule
+	     - key: node-role.kubernetes.io/master
+	       operator: Exists
+	       effect: NoSchedule
+	     containers:
+	     - name: fluentd-elasticsearch
+	       image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+	       resources:
+		 limits:
+		   memory: 200Mi
+		 requests:
+		   cpu: 100m
+		   memory: 200Mi
+	       volumeMounts:
+	       - name: varlog
+		 mountPath: /var/log
+	     terminationGracePeriodSeconds: 30
+	     volumes:
+	     - name: varlog
+	       hostPath:
+		 path: /var/log
+	
+	$ kubectl apply -f daemonset.yaml
 
-       $ kubectl apply -f daemonset.yaml
