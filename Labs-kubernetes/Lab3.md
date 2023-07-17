@@ -248,8 +248,8 @@ En este laboratorio vamos a crear un StatefulSet y comprobaremos cómo se provis
 
 * Para esta parte arrancaremos de forma temporal un clúster de 2 nodos:
 
-       $ minikube stop
-       $ minikube start --nodes 2 -p daemonset-demo --driver=docker
+	$ minikube stop
+	$ minikube start --nodes 2 -p daemonset-demo --driver=docker
 
 Esperamos a que los nodos estén Ready
 
