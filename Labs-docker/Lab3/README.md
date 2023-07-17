@@ -1,4 +1,6 @@
-# Almacenamiento persistente
+# Lab 3: Docker - Almacenamiento persistente
+
+En este laboratorio vamos a ver cómo podemos persistir datos después de borrar un contenedor.
 
 Ejecutamos un contenedor de Nginx:
 
