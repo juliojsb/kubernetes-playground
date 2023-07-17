@@ -251,14 +251,14 @@ Para esta parte arrancaremos de forma temporal un clúster de 2 nodos:
 	$ minikube stop
 	$ minikube start --nodes 2 -p daemonset-demo --driver=docker
 
-Esperamos a que los nodos estén Ready
+Esperamos a que los nodos estén Ready:
 	
 	$ kubectl get nodes
 	NAME                 STATUS   ROLES                  AGE     VERSION
 	daemonset-demo       Ready    control-plane,master   6m18s   v1.21.2
 	daemonset-demo-m02   Ready    <none>                 116s    v1.21.2
 
-1. Creamos el DaemonSet:
+Creamos el DaemonSet:
        
 	$ vi daemonset.yaml
 	
@@ -307,3 +307,51 @@ Esperamos a que los nodos estén Ready
 	
 	$ kubectl apply -f daemonset.yaml
 
+Vemos los dos pods del DaemonSet desplegados en cada nodo. No es necesario especificar el nº de réplicas en el DaemonSet, ya que levantará un pod en cada nodo del clúster.
+
+	$ kubectl get pod -n kube-system -o wide | grep fluentd 
+	fluentd-elasticsearch-42hlh              1/1     Running   0          65s     10.244.1.2     daemonset-demo-m02   <none>           <none>
+	fluentd-elasticsearch-cq5wf              1/1     Running   0          65s     10.244.0.3     daemonset-demo       <none>           <none>
+
+Modificamos la request del DaemonSet y vemos cómo se actualizan los pods:
+
+	$ kubectl edit ds fluentd-elasticsearch -n kube-system
+	
+	...
+	        resources:
+	          limits:
+	            memory: 200Mi
+	          requests:
+	            cpu: 100m
+	            memory: 100Mi
+	...
+
+El cambio recreará los pods del DaemonSet de forma ordenada:
+
+	$ kubectl get pod -n kube-system -o wide | grep fluentd 
+	fluentd-elasticsearch-cq5wf              1/1     Running   0          4m58s   10.244.0.3     daemonset-demo       <none>           <none>
+	fluentd-elasticsearch-z9s2x              0/1     Pending   0          0s      <none>         daemonset-demo-m02   <none>           <none>
+
+Reiniciar el DaemonSet con un rollout. Útil si queremos hacer un "refresco" de todos los pods:
+
+	$ kubectl rollout restart ds fluentd-elasticsearch -n kube-system
+	daemonset.apps/fluentd-elasticsearch restarted
+	
+	$ kubectl get pod -n kube-system -o wide | grep fluentd 
+	fluentd-elasticsearch-hvqmb              0/1     ContainerCreating   0          1s     <none>         daemonset-demo       <none>           <none>
+	fluentd-elasticsearch-z9s2x              1/1     Running             0          5m1s   10.244.1.3     daemonset-demo-m02   <none>           <none>
+
+Observamos cómo se reinician los pods:
+
+	$ kubectl get pod -n kube-system -o wide | grep fluentd 
+	fluentd-elasticsearch-hvqmb              1/1     Running       0          5s     10.244.0.5     daemonset-demo       <none>           <none>
+	fluentd-elasticsearch-z9s2x              0/1     Terminating   0          5m5s   <none>         daemonset-demo-m02   <none>           <none>
+
+Una vez terminamos las pruebas, paramos el cluster de 2 nodos:
+
+	$ minikube stop -p daemonset-demo
+	* Stopping node "daemonset-demo"  ...
+	* Powering off "daemonset-demo" via SSH ...
+	* Stopping node "daemonset-demo-m02"  ...
+	* Powering off "daemonset-demo-m02" via SSH ...
+	* 2 nodes stopped.
