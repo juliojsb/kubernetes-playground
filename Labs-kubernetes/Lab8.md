@@ -30,6 +30,6 @@ Acceder a apps para comprobar funcionalidad:
 
 Mantenimiento:
 
-kubectl drain minikube --ignore-daemonsets --delete-emptydir-data --force
-kubectl cordon minikube
-kubectl uncordon minikube
+	$ kubectl drain minikube --ignore-daemonsets --delete-emptydir-data --force
+	$ kubectl cordon minikube
+	$ kubectl uncordon minikube
